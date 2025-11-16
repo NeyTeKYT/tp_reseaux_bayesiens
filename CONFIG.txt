@@ -1,0 +1,5 @@
+conda activate init-IA
+conda install python=3.11
+conda install -c conda-forge pgmpy
+conda install conda-forge::opt_einsum conda-forge::pyro-ppl
+conda install conda-forge::pygraphviz conda-forge::xgboost
