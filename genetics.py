@@ -33,13 +33,13 @@ def get_probs_gene_ancestor(varName):
 
 #get_probs_gene_ancestor("Gene")     # Test de l'affichage du TabularCPD
 
-# +------------+------+
-# | P(Gene)(2) | 0.01 |
-# +------------+------+
-# | P(Gene)(1) | 0.03 |
-# +------------+------+
-# | P(Gene)(0) | 0.96 |
-# +------------+------+
+# +---------+------+
+# | Gene(2) | 0.01 |
+# +---------+------+
+# | Gene(1) | 0.03 |
+# +---------+------+
+# | Gene(0) | 0.96 |
+# +---------+------+
 
 def get_probs_trait(varName,evidenceName):
     """
@@ -68,18 +68,18 @@ def get_probs_trait(varName,evidenceName):
     #print(cpd)
     return cpd
 
-get_probs_trait("Trait", "Gene")    # Test de l'affichage du TabularCPD
+#get_probs_trait("Trait", "Gene")    # Test de l'affichage du TabularCPD
 
-# +-----------------------+---------+---------+---------+
-# | Gene                  | Gene(2) | Gene(1) | Gene(0) |
-# +-----------------------+---------+---------+---------+
-# | P(Trait | Gene)(vrai) | 0.65    | 0.56    | 0.01    |
-# +-----------------------+---------+---------+---------+
-# | P(Trait | Gene)(faux) | 0.35    | 0.44    | 0.99    |
-# +-----------------------+---------+---------+---------+
+# +-------------+---------+---------+---------+
+# | Gene        | Gene(2) | Gene(1) | Gene(0) |
+# +-------------+---------+---------+---------+
+# | Trait(vrai) | 0.65    | 0.56    | 0.01    |
+# +-------------+---------+---------+---------+
+# | Trait(faux) | 0.35    | 0.44    | 0.99    |
+# +-------------+---------+---------+---------+
 
 # constant defining mutation probability of a gene
-prob_mutation = 0.01    # probabilité que le gène devienne muté / faux muté après transmission
+prob_mutation = 0.01    # probabilité que le gène devienne muté / non muté après transmission
 
 def get_probs_heredity1(geneParent):
     """
@@ -103,9 +103,9 @@ def get_probs_heredity1(geneParent):
         raise ValueError("La parent peut transmettre 0, 1 ou 2 gènes.")
 
 # Affichage des 3 probabilités
-#print("P(G enfant | 0) = " + str(get_probs_heredity1(0)))
-#print("P(G enfant | 1) = " + str(get_probs_heredity1(1)))
-#print("P(G enfant | 2) = " + str(get_probs_heredity1(2)))
+#print("P(GeneChild | GeneParent = 0) = " + str(get_probs_heredity1(0)))
+#print("P(GeneChild | GeneParent = 1) = " + str(get_probs_heredity1(1)))
+#print("P(GeneChild | GeneParent = 2) = " + str(get_probs_heredity1(2)))
 
 def get_probs_gene(varNameChild,evidenceNameFather,evidenceNameMother):
     """
@@ -149,7 +149,6 @@ def get_probs_gene(varNameChild,evidenceNameFather,evidenceNameMother):
             p2 = pf * pm
             row_gene_child_2.append(p2)
 
-
     cpd = TabularCPD (
         variable = varNameChild,
         variable_card = 3, # "Gene_Child=2", "Gene_Child=1", "Gene_Child=0"
@@ -169,6 +168,8 @@ def get_probs_gene(varNameChild,evidenceNameFather,evidenceNameMother):
     #print(cpd)
     return cpd
 
+#get_probs_gene("Gene_Child", "Gene_Father", "Gene_Mother")
+
 # +---------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+
 # | Gene_Father   | Gene_Father(2) | Gene_Father(2) | Gene_Father(2) | Gene_Father(1) | Gene_Father(1) | Gene_Father(1) | Gene_Father(0) | Gene_Father(0) | Gene_Father(0) |
 # +---------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+
@@ -180,7 +181,6 @@ def get_probs_gene(varNameChild,evidenceNameFather,evidenceNameMother):
 # +---------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+
 # | Gene_Child(0) | 0.9801         | 0.49005        | 0.0            | 0.49005        | 0.245025       | 0.0            | 0.0            | 0.0            | 0.0            |
 # +---------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+
-
 
 #--------------------Create a Bayesian Network for family n°1 --------------------------------
 
@@ -229,7 +229,7 @@ model1.add_cpds(
 )  
 
 # Renvoie "True" si en aditionnant chaque colonne, on obtient 1, ce qui permet de vérifier que les probabilités sont bien calculées.
-print(model1.check_model()) 
+#print(model1.check_model()) 
 
 # Vérification du modèle graphiquement
 viz = model1.to_graphviz()
@@ -244,25 +244,25 @@ infer = VariableElimination(model1)
 T = {
     "Trait_Leto": "faux",
     "Trait_Jessica": "vrai",
-    #"Trait_Paul": "faux",
+    #"Trait_Paul": "faux",  # Fausse les résultats si on le laisse
     "Trait_Alia": "vrai"
 }
 
 result = infer.query(variables = ["Gene_Paul"], evidence = T)
-print(result)
+#print(result)
 
 # Calculate predictions based on the evidence provided by the Trait variables and knowing that Jessica and Alia have resp. 1 and 2 genes
 T = {
     "Trait_Leto": "faux",
     "Trait_Jessica": "vrai",
-    #"Trait_Paul": "faux",
+    #"Trait_Paul": "faux",  # Fausse les résultats si on le laisse
     "Trait_Alia": "vrai",
     "Gene_Jessica": "1",
     "Gene_Alia": "2"
 }
 
 result = infer.query(variables = ["Gene_Paul"], evidence = T)
-print(result)
+#print(result)
 
 # Approximate inference
 inference = BayesianModelSampling(model1)
@@ -281,9 +281,9 @@ series_RV = samples['Gene_Paul'].value_counts()
 #print(series_RV)
 
 # Affichage des probabilités
-print("P(G Paul = 2 | T) = % .4f" %(series_RV["2"]/sum(series_RV)))
-print("P(G Paul = 1 | T) = % .4f" %(series_RV["1"]/sum(series_RV)))
-print("P(G Paul = 0 | T) = % .4f" %(series_RV["0"]/sum(series_RV)))
+#print("P(Gene_Paul = 2 | T) = % .4f" %(series_RV["2"]/sum(series_RV)))
+#print("P(Gene_Paul = 1 | T) = % .4f" %(series_RV["1"]/sum(series_RV)))
+#print("P(Gene_Paul = 0 | T) = % .4f" %(series_RV["0"]/sum(series_RV)))
 
 #--------------------Create a Bayesian Network for family n°2 --------------------------------
 
