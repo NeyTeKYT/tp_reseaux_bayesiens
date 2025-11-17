@@ -14,6 +14,8 @@ La première étape du TP consistait à reproduire plusieurs tableaux de probabi
 
 Cette première étape m'a vraiment permis de **comprendre en profondeur le fonctionnement des TabularCPD**, fondamental pour la suite du TP !  
 
+![get_probs_gene_ancestor_and_get_probs_trait](https://github.com/user-attachments/assets/c7d79ae6-091c-410f-bebd-164fb074f360)
+
 ---
 
 ## 👶 Modélisation de l'hérédité
@@ -23,6 +25,8 @@ La deuxième étape a consisté à compléter la fonction `get_probs_heredity1(g
 Autrement dit : calculer la probabilité qu'un chromosome hérité d'un parent (père ou mère) porte exactement **une version mutée**, en connaissant le nombre de mutations présentes chez ce parent.  
 
 Cette implémentation a permis de finaliser la fonction `get_probs_gene(varNameChild,evidenceNameFather,evidenceNameMother)`, qui calcule toutes les probabilités possibles pour l'enfant selon les combinaisons de gènes parentaux.  
+
+![get_probs_heredity1_and_get_probs_gene](https://github.com/user-attachments/assets/da3ce7e2-a1a6-44a8-bb0e-ad16b89eda53)
 
 ---
 
@@ -37,6 +41,8 @@ Deux méthodes d'inférence ont été utilisées :
 
 En comparant les résultats, on constate que les différences entre inférence exacte et inférence approchée sont minimes; néanmoins, lorsque l'on recherche une valeur exacte, l'inférence approchée reste insuffisante, même si elle fournit une estimation très fiable.
 
+![family1](https://github.com/user-attachments/assets/90d36e9b-5fae-40b5-b7c7-7d86946cf243)
+
 ---
 
 ## 👑 Étude de la famille n°2 (famille royale)
@@ -44,6 +50,8 @@ En comparant les résultats, on constate que les différences entre inférence e
 La dernière étape du TP consistait à appliquer les mêmes méthodes à une **famille plus complexe : la famille royale**.  
 
 Cette fois, l'objectif était de calculer les probabilités concernant *George* et *Liliet*, avec un arbre généalogique plus large et plus riche en dépendances.
+
+![family2](https://github.com/user-attachments/assets/84b9cb05-5905-4e4f-bb27-7ebd73417ac2)
 
 ---
 
